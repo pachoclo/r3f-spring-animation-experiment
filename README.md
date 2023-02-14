@@ -1,9 +1,11 @@
 # R3F + React Spring Experiment 🧪
 
-- Using Spring to animate position and rotation props
+https://user-images.githubusercontent.com/3608140/218800605-655ffc15-16c0-4eb5-ad14-5c78c78f85bb.mov  
+
+---
+  
+  
+- Use [React Spring](https://react-spring.dev/) to animate position and rotation props
+- Trigger animation on mouse click
 - Chaining animations
 - Abstracting Spring animations into hooks
-
-https://user-images.githubusercontent.com/3608140/218796874-64e2207f-afab-4235-b169-d70fcf5e8972.mov
-
-
