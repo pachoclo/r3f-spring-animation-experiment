@@ -112,6 +112,12 @@ function Cubii() {
           e.stopPropagation()
           startAnimation()
         }}
+        onPointerEnter={() => {
+          document.body.style.cursor = 'pointer'
+        }}
+        onPointerLeave={() => {
+          document.body.style.cursor = 'default'
+        }}
       >
         <Walls />
         <Floor />
