@@ -5,7 +5,7 @@ import { BoxGeometry, MeshNormalMaterial } from 'three'
 import { GroupStopEventPropagation } from '../../GroupStopEventPropagation'
 import { useFloorAnimation } from './use-floor-animation'
 
-const geometry = new BoxGeometry(2, 2, 1)
+const geometry = new BoxGeometry(2, 2, 0.5)
 const material = new MeshNormalMaterial()
 
 export function Floor() {
@@ -33,7 +33,7 @@ function FloorBase({ rotationZ }: { rotationZ: number }) {
         geometry={geometry}
         material={material}
         rotation-x={-Math.PI / 2}
-        position={[1, 0.5, 0]}
+        position={[1, 0.25, 0]}
       />
     </group>
   )

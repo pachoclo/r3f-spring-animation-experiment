@@ -2,7 +2,10 @@ import { easings, useSpring } from '@react-spring/three'
 import { useState } from 'react'
 
 export const useLidAnimation = () => {
-  const [open, setOpen] = useState(false)
+  const [{ open, opening }, setState] = useState({
+    open: false,
+    opening: false,
+  })
 
   const [{ positionY, rotationY }, animation] = useSpring(() => ({
     from: { positionY: 1.5, rotationY: 0 },
@@ -24,6 +27,12 @@ export const useLidAnimation = () => {
             duration: 500,
             easing: easings.easeOutCubic,
           },
+          onResolve: () => {
+            setState({
+              open: true,
+              opening: false,
+            })
+          },
         },
       ],
     })
@@ -31,6 +40,7 @@ export const useLidAnimation = () => {
 
   const closingAnimation = () => {
     animation.start({
+      config: {},
       to: [
         {
           rotationY: 0,
@@ -45,6 +55,12 @@ export const useLidAnimation = () => {
             duration: 800,
             easing: easings.easeInOutBack,
           },
+          onResolve: () => {
+            setState({
+              open: false,
+              opening: false,
+            })
+          },
         },
       ],
     })
@@ -52,13 +68,53 @@ export const useLidAnimation = () => {
 
   const toggleOpen = () => {
     if (open) {
+      setState((state) => ({
+        ...state,
+        opening: true,
+      }))
       closingAnimation()
-      setOpen(false)
     } else {
+      setState({
+        open: false,
+        opening: true,
+      })
       openingAnimation()
-      setOpen(true)
     }
   }
 
-  return { toggleOpen, positionY, rotationY }
+  const peek = () => {
+    if (open || opening) {
+      return
+    }
+    animation.start({
+      to: [
+        {
+          positionY: 1.6,
+          config: {
+            duration: 400,
+            easing: easings.easeInOutCubic,
+          },
+        },
+      ],
+    })
+  }
+
+  const hide = () => {
+    if (open || opening) {
+      return
+    }
+    animation.start({
+      to: [
+        {
+          positionY: 1.5,
+          config: {
+            duration: 280,
+            easing: easings.easeOutCubic,
+          },
+        },
+      ],
+    })
+  }
+
+  return { toggleOpen, peek, hide, positionY, rotationY }
 }

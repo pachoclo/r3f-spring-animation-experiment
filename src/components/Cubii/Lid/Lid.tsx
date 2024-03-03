@@ -14,13 +14,19 @@ const geometry = new BoxGeometry(1, 1, 1)
 const AnimatedLid = animated(LidBase)
 
 export function Lid() {
-  const { positionY, rotationY, toggleOpen } = useLidAnimation()
+  const { positionY, rotationY, toggleOpen, peek, hide } = useLidAnimation()
 
   return (
     <GroupStopEventPropagation
       onPointerUp={toggleOpen}
-      onPointerLeave={() => (document.body.style.cursor = 'default')}
-      onPointerEnter={() => (document.body.style.cursor = 'pointer')}
+      onPointerLeave={() => {
+        document.body.style.cursor = 'default'
+        hide()
+      }}
+      onPointerEnter={() => {
+        document.body.style.cursor = 'pointer'
+        peek()
+      }}
     >
       <AnimatedLid positionY={positionY} rotationY={rotationY} />
     </GroupStopEventPropagation>
@@ -30,12 +36,10 @@ export function Lid() {
 export type LidBaseProps = {
   positionY: number
   rotationY: number
-}
+} & CenterProps &
+  GroupProps
 
-export function LidBase({
-  positionY,
-  rotationY,
-}: LidBaseProps & CenterProps & GroupProps) {
+export function LidBase({ positionY, rotationY }: LidBaseProps) {
   const { wireframe } = useControls('Helpers', { wireframe: false })
   material.wireframe = wireframe
 
