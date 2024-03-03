@@ -2,9 +2,11 @@ import { Canvas } from '@react-three/fiber'
 import { Leva } from 'leva'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { ACESFilmicToneMapping, sRGBEncoding } from 'three'
+import { ACESFilmicToneMapping } from 'three'
+
+import '../styles/main.css'
+
 import { Scene } from './Scene'
-import './styles/main.css'
 
 function Main() {
   return (
@@ -27,7 +29,6 @@ function Main() {
         gl={{
           antialias: true,
           toneMapping: ACESFilmicToneMapping,
-          outputEncoding: sRGBEncoding,
         }}
         camera={{
           fov: 75,
@@ -46,5 +47,5 @@ function Main() {
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Main />
-  </React.StrictMode>
+  </React.StrictMode>,
 )

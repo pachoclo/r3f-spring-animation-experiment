@@ -1,6 +1,7 @@
 import { OrbitControls } from '@react-three/drei'
-import { Cubii } from './components/Cubii'
-import { SceneHelpers } from './components/SceneHelpers'
+
+import { Cubii } from './Cubii'
+import { SceneHelpers } from './SceneHelpers'
 
 function Scene() {
   return (
