@@ -10,22 +10,22 @@
     "clean": "rm -rf node_modules && npm i"
   },
   "dependencies": {
-    "@react-spring/three": "^9.6.1",
-    "@react-three/drei": "^9.78.2",
-    "@react-three/fiber": "^8.12.1",
-    "@types/three": "^0.162.0",
-    "leva": "^0.9.34",
-    "r3f-perf": "^7.1.2",
+    "@react-spring/three": "^9.7.5",
+    "@react-three/drei": "^9.99.0",
+    "@react-three/fiber": "^8.15.16",
+    "@types/three": "^0.174.0",
+    "leva": "^0.10.0",
+    "r3f-perf": "^7.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "three": "^0.162.0"
+    "three": "^0.174.0"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.1.1",
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "^18.2.7",
-    "@vitejs/plugin-react": "^4.2.1",
-    "typescript": "^5.3.3",
-    "vite": "^5.1.4"
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.1"
   }
 }
