@@ -1,19 +1,24 @@
 import { easings, useSpring } from '@react-spring/three'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
+
+import { useCubiiStore } from '../cubii-store'
 
 export const useLidAnimation = () => {
-  const [{ open, opening, hasBeenOpened }, setState] = useState({
-    open: false,
-    opening: false,
-    hasBeenOpened: false,
-  })
+  const {
+    lidState,
+    setLidState,
+    lidHasBeenOpened,
+    setLidHasBeenOpened,
+    lidIsPeeking,
+    setLidIsPeeking,
+  } = useCubiiStore()
 
   const [{ positionY, rotationY }, animation] = useSpring(() => ({
     from: { positionY: 1.5, rotationY: 0 },
   }))
 
-  const openingAnimation = (onOpen: () => void) => {
-    setState((prev) => ({ ...prev, opening: true }))
+  const open = () => {
+    setLidState('opening')
     animation.start({
       to: [
         {
@@ -24,15 +29,16 @@ export const useLidAnimation = () => {
           rotationY: (Math.PI / 4) * 5,
           config: { duration: 500, easing: easings.easeOutCubic },
           onResolve: () => {
-            onOpen()
-            setState({ open: true, opening: false, hasBeenOpened: true })
+            setLidHasBeenOpened(true)
+            setLidState('open')
           },
         },
       ],
     })
   }
 
-  const closingAnimation = (onClose: () => void) => {
+  const close = () => {
+    setLidState('closing')
     animation.start({
       config: {},
       to: [
@@ -43,56 +49,50 @@ export const useLidAnimation = () => {
         {
           positionY: 1.5,
           config: { duration: 800, easing: easings.easeInOutBack },
+        },
+      ],
+      onResolve: () => {
+        setLidState('closed')
+      },
+    })
+  }
+
+  const toggleOpen = () => {
+    if (lidIsPeeking) return
+    if (lidState === 'open') close()
+    if (lidState === 'closed') open()
+  }
+
+  const peek = (onRestCallback?: () => void) => {
+    if (lidState === 'opening' || lidState === 'closing' || lidState === 'open') return
+    animation.start({
+      to: [
+        {
+          positionY: 1.65,
+          config: { duration: 400, easing: easings.easeInOutCubic },
           onResolve: () => {
-            setState((prev) => ({ ...prev, open: false, opening: false }))
-            onClose()
+            onRestCallback?.()
           },
         },
       ],
     })
   }
 
-  const toggleOpen = (onOpen: () => void) => {
-    if (open) {
-      setState((prev) => ({ ...prev, opening: true }))
-      closingAnimation(onOpen)
-    } else {
-      setState((prev) => ({ ...prev, open: false, opening: true }))
-      openingAnimation(onOpen)
-    }
-  }
-
-  const peek = (onRestCallback?: () => void) => {
-    if (open || opening) {
-      return
-    }
-    animation.start({
-      to: [
-        {
-          positionY: 1.65,
-          config: { duration: 400, easing: easings.easeInOutCubic },
-          onRest: onRestCallback,
-        },
-      ],
-    })
-  }
-
   const hide = () => {
-    if (open || opening) {
-      return
-    }
+    if (lidState === 'opening' || lidState === 'closing' || lidState === 'open') return
     animation.start({
       to: [
         {
           positionY: 1.5,
           config: { duration: 280, easing: easings.easeOutCubic },
+          onResolve: () => {},
         },
       ],
     })
   }
 
-  const peekABoo = useCallback(() => {
-    if (open || opening || hasBeenOpened) {
+  const peekABoo = () => {
+    if (lidHasBeenOpened) {
       return
     }
     peek(() => {
@@ -100,7 +100,7 @@ export const useLidAnimation = () => {
         hide()
       }, 300)
     })
-  }, [open, opening, hasBeenOpened])
+  }
 
   useEffect(() => {
     let timeout = setTimeout(() => {
@@ -110,5 +110,5 @@ export const useLidAnimation = () => {
     return () => clearTimeout(timeout)
   }, [peekABoo])
 
-  return { toggleOpen, peek, peekABoo, hide, positionY, rotationY }
+  return { toggleOpen, peek, hide, positionY, rotationY }
 }

@@ -1,7 +1,7 @@
 {
   "singleQuote": true,
   "semi": false,
-  "printWidth": 80,
+  "printWidth": 100,
   "jsxSingleQuote": true,
   "plugins": ["@ianvs/prettier-plugin-sort-imports"],
   "importOrder": [
