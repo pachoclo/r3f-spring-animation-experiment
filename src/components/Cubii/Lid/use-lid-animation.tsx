@@ -1,6 +1,5 @@
 import { easings, useSpring } from '@react-spring/three'
-import { useCallback, useEffect } from 'react'
-
+import { useEffect } from 'react'
 import { useCubiiStore } from '../cubii-store'
 
 export const useLidAnimation = () => {

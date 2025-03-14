@@ -1,6 +1,5 @@
 import { easings, useSpring } from '@react-spring/three'
 import { useEffect } from 'react'
-
 import { useCubiiStore } from '../../cubii-store'
 
 export function useFrontWallAnimation() {
@@ -41,21 +40,13 @@ export function useFrontWallAnimation() {
   }
 
   const toggle = () => {
-    if (frontWallState === 'closed') {
-      open()
-    }
-    if (frontWallState === 'open') {
-      close()
-    }
+    if (frontWallState === 'closed') open()
+    if (frontWallState === 'open') close()
   }
 
   useEffect(() => {
-    if (lidState === 'open') {
-      open()
-    }
-    if (lidState === 'closed') {
-      close()
-    }
+    if (lidState === 'open') open()
+    if (lidState === 'closed') close()
   }, [lidState])
 
   return { rotationX, open, close, toggle }

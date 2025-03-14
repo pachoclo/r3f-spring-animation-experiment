@@ -2,7 +2,6 @@ import { animated } from '@react-spring/three'
 import { GroupProps } from '@react-three/fiber'
 import { useControls } from 'leva'
 import { BoxGeometry, MeshNormalMaterial } from 'three'
-
 import { GroupStopEventPropagation } from '../../GroupStopEventPropagation'
 import { useLidAnimation } from './use-lid-animation'
 
@@ -18,9 +17,15 @@ export function Lid() {
     <AnimatedLid
       positionY={positionY}
       rotationY={rotationY}
-      onPointerUp={() => toggleOpen()}
-      onPointerEnter={() => peek()}
-      onPointerLeave={() => hide()}
+      onPointerUp={toggleOpen}
+      onPointerEnter={() => {
+        document.body.style.cursor = 'pointer'
+        peek()
+      }}
+      onPointerLeave={() => {
+        document.body.style.cursor = 'default'
+        hide()
+      }}
     />
   )
 }

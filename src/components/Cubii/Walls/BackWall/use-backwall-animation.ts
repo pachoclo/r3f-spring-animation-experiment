@@ -1,6 +1,5 @@
 import { easings, useSpring } from '@react-spring/three'
 import { useEffect } from 'react'
-
 import { useCubiiStore } from '../../cubii-store'
 
 export function useBackWallAnimation() {
@@ -15,6 +14,7 @@ export function useBackWallAnimation() {
     animation.start({
       to: [
         {
+          delay: 150,
           rotationX: -Math.PI / 2,
           config: { duration: 500, easing: easings.easeOutBounce },
         },
