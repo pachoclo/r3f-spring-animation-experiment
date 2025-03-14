@@ -12,7 +12,7 @@ export const useLidAnimation = () => {
     from: { positionY: 1.5, rotationY: 0 },
   }))
 
-  const openingAnimation = () => {
+  const openingAnimation = (onOpen: () => void) => {
     setState((prev) => ({ ...prev, opening: true }))
     animation.start({
       to: [
@@ -24,6 +24,7 @@ export const useLidAnimation = () => {
           rotationY: (Math.PI / 4) * 5,
           config: { duration: 500, easing: easings.easeOutCubic },
           onResolve: () => {
+            onOpen()
             setState({ open: true, opening: false, hasBeenOpened: true })
           },
         },
@@ -31,7 +32,7 @@ export const useLidAnimation = () => {
     })
   }
 
-  const closingAnimation = () => {
+  const closingAnimation = (onClose: () => void) => {
     animation.start({
       config: {},
       to: [
@@ -44,19 +45,20 @@ export const useLidAnimation = () => {
           config: { duration: 800, easing: easings.easeInOutBack },
           onResolve: () => {
             setState((prev) => ({ ...prev, open: false, opening: false }))
+            onClose()
           },
         },
       ],
     })
   }
 
-  const toggleOpen = () => {
+  const toggleOpen = (onOpen: () => void) => {
     if (open) {
       setState((prev) => ({ ...prev, opening: true }))
-      closingAnimation()
+      closingAnimation(onOpen)
     } else {
       setState((prev) => ({ ...prev, open: false, opening: true }))
-      openingAnimation()
+      openingAnimation(onOpen)
     }
   }
 
@@ -67,7 +69,7 @@ export const useLidAnimation = () => {
     animation.start({
       to: [
         {
-          positionY: 1.6,
+          positionY: 1.65,
           config: { duration: 400, easing: easings.easeInOutCubic },
           onRest: onRestCallback,
         },
