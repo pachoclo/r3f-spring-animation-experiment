@@ -16,26 +16,14 @@ function Main() {
         oneLineLabels={false}
         flat={true}
         theme={{
-          sizes: {
-            titleBarHeight: '28px',
-          },
-          fontSizes: {
-            root: '10px',
-          },
+          sizes: { titleBarHeight: '28px' },
+          fontSizes: { root: '10px' },
         }}
       />
       <Canvas
         dpr={[1, 2]}
-        gl={{
-          antialias: true,
-          toneMapping: ACESFilmicToneMapping,
-        }}
-        camera={{
-          fov: 75,
-          near: 0.1,
-          far: 200,
-          position: [4.4, 5.0, 6.6],
-        }}
+        gl={{ antialias: true, toneMapping: ACESFilmicToneMapping }}
+        camera={{ fov: 75, near: 0.1, far: 200, position: [4.4, 6, 6.6] }}
         shadows
       >
         <Scene />

@@ -2,7 +2,7 @@ import { animated } from '@react-spring/three'
 import { Center, CenterProps } from '@react-three/drei'
 import { GroupProps } from '@react-three/fiber'
 import { useControls } from 'leva'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { BoxGeometry, MeshNormalMaterial } from 'three'
 
 import { GroupStopEventPropagation } from '../../GroupStopEventPropagation'
@@ -14,7 +14,8 @@ const geometry = new BoxGeometry(1, 1, 1)
 const AnimatedLid = animated(LidBase)
 
 export function Lid() {
-  const { positionY, rotationY, toggleOpen, peek, hide } = useLidAnimation()
+  const { positionY, rotationY, toggleOpen, peek, peekABoo, hide } =
+    useLidAnimation()
 
   return (
     <GroupStopEventPropagation

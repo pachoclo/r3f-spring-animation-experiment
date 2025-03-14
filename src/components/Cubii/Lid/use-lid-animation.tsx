@@ -1,10 +1,11 @@
 import { easings, useSpring } from '@react-spring/three'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export const useLidAnimation = () => {
-  const [{ open, opening }, setState] = useState({
+  const [{ open, opening, hasBeenOpened }, setState] = useState({
     open: false,
     opening: false,
+    hasBeenOpened: false,
   })
 
   const [{ positionY, rotationY }, animation] = useSpring(() => ({
@@ -12,26 +13,18 @@ export const useLidAnimation = () => {
   }))
 
   const openingAnimation = () => {
+    setState((prev) => ({ ...prev, opening: true }))
     animation.start({
       to: [
         {
           positionY: 4.5,
-          config: {
-            duration: 800,
-            easing: easings.easeInOutBack,
-          },
+          config: { duration: 500, easing: easings.easeInOutBack },
         },
         {
           rotationY: (Math.PI / 4) * 5,
-          config: {
-            duration: 500,
-            easing: easings.easeOutCubic,
-          },
+          config: { duration: 500, easing: easings.easeOutCubic },
           onResolve: () => {
-            setState({
-              open: true,
-              opening: false,
-            })
+            setState({ open: true, opening: false, hasBeenOpened: true })
           },
         },
       ],
@@ -44,22 +37,13 @@ export const useLidAnimation = () => {
       to: [
         {
           rotationY: 0,
-          config: {
-            duration: 500,
-            easing: easings.easeInOutCubic,
-          },
+          config: { duration: 500, easing: easings.easeInOutCubic },
         },
         {
           positionY: 1.5,
-          config: {
-            duration: 800,
-            easing: easings.easeInOutBack,
-          },
+          config: { duration: 800, easing: easings.easeInOutBack },
           onResolve: () => {
-            setState({
-              open: false,
-              opening: false,
-            })
+            setState((prev) => ({ ...prev, open: false, opening: false }))
           },
         },
       ],
@@ -68,21 +52,15 @@ export const useLidAnimation = () => {
 
   const toggleOpen = () => {
     if (open) {
-      setState((state) => ({
-        ...state,
-        opening: true,
-      }))
+      setState((prev) => ({ ...prev, opening: true }))
       closingAnimation()
     } else {
-      setState({
-        open: false,
-        opening: true,
-      })
+      setState((prev) => ({ ...prev, open: false, opening: true }))
       openingAnimation()
     }
   }
 
-  const peek = () => {
+  const peek = (onRestCallback?: () => void) => {
     if (open || opening) {
       return
     }
@@ -90,10 +68,8 @@ export const useLidAnimation = () => {
       to: [
         {
           positionY: 1.6,
-          config: {
-            duration: 400,
-            easing: easings.easeInOutCubic,
-          },
+          config: { duration: 400, easing: easings.easeInOutCubic },
+          onRest: onRestCallback,
         },
       ],
     })
@@ -107,14 +83,30 @@ export const useLidAnimation = () => {
       to: [
         {
           positionY: 1.5,
-          config: {
-            duration: 280,
-            easing: easings.easeOutCubic,
-          },
+          config: { duration: 280, easing: easings.easeOutCubic },
         },
       ],
     })
   }
 
-  return { toggleOpen, peek, hide, positionY, rotationY }
+  const peekABoo = useCallback(() => {
+    if (open || opening || hasBeenOpened) {
+      return
+    }
+    peek(() => {
+      setTimeout(() => {
+        hide()
+      }, 300)
+    })
+  }, [open, opening, hasBeenOpened])
+
+  useEffect(() => {
+    let timeout = setTimeout(() => {
+      peekABoo()
+    }, 1500)
+
+    return () => clearTimeout(timeout)
+  }, [peekABoo])
+
+  return { toggleOpen, peek, peekABoo, hide, positionY, rotationY }
 }
