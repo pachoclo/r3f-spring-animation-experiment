@@ -17,7 +17,7 @@ export function Lid() {
     <AnimatedLid
       positionY={positionY}
       rotationY={rotationY}
-      onPointerUp={toggleOpen}
+      onClick={toggleOpen}
       onPointerEnter={() => {
         document.body.style.cursor = 'pointer'
         peek()
@@ -38,7 +38,7 @@ export type LidBaseProps = {
 export function LidBase({
   positionY,
   rotationY,
-  onPointerUp,
+  onClick,
   onPointerLeave,
   onPointerEnter,
 }: LidBaseProps) {
@@ -50,7 +50,7 @@ export function LidBase({
       <mesh
         onPointerEnter={onPointerEnter}
         onPointerLeave={onPointerLeave}
-        onPointerUp={onPointerUp}
+        onClick={onClick}
         geometry={geometry}
         material={material}
         position={[0, 0, 0]}

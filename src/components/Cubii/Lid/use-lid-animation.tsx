@@ -57,13 +57,14 @@ export const useLidAnimation = () => {
   }
 
   const toggleOpen = () => {
-    if (lidIsPeeking) return
+    // if (lidIsPeeking) return
     if (lidState === 'open') close()
     if (lidState === 'closed') open()
   }
 
   const peek = (onRestCallback?: () => void) => {
-    if (lidState === 'opening' || lidState === 'closing' || lidState === 'open') return
+    if (lidState !== 'closed') return
+    setLidIsPeeking(true)
     animation.start({
       to: [
         {
@@ -78,13 +79,15 @@ export const useLidAnimation = () => {
   }
 
   const hide = () => {
-    if (lidState === 'opening' || lidState === 'closing' || lidState === 'open') return
+    if (lidState !== 'closed') return
     animation.start({
       to: [
         {
           positionY: 1.5,
           config: { duration: 280, easing: easings.easeOutCubic },
-          onResolve: () => {},
+          onResolve: () => {
+            setLidIsPeeking(false)
+          },
         },
       ],
     })
@@ -107,7 +110,7 @@ export const useLidAnimation = () => {
     }, 1500)
 
     return () => clearTimeout(timeout)
-  }, [peekABoo])
+  }, [])
 
   return { toggleOpen, peek, hide, positionY, rotationY }
 }
