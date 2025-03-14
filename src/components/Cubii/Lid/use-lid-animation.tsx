@@ -62,24 +62,21 @@ export const useLidAnimation = () => {
     if (lidState === 'closed') open()
   }
 
-  const peek = (onRestCallback?: () => void) => {
-    if (lidState !== 'closed') return
+  const peek = () => {
+    if (lidState !== 'closed' || lidIsPeeking) return
     setLidIsPeeking(true)
     animation.start({
       to: [
         {
           positionY: 1.65,
           config: { duration: 400, easing: easings.easeInOutCubic },
-          onResolve: () => {
-            onRestCallback?.()
-          },
         },
       ],
     })
   }
 
   const hide = () => {
-    if (lidState !== 'closed') return
+    if (lidState !== 'closed' || !lidIsPeeking) return
     animation.start({
       to: [
         {
@@ -94,22 +91,30 @@ export const useLidAnimation = () => {
   }
 
   const peekABoo = () => {
-    if (lidHasBeenOpened) {
+    if (lidHasBeenOpened || lidIsPeeking || lidState !== 'closed') {
       return
     }
-    peek(() => {
-      setTimeout(() => {
-        hide()
-      }, 300)
+    animation.start({
+      to: [
+        {
+          delay: 1500,
+          positionY: 1.65,
+          config: { duration: 400, easing: easings.easeInOutCubic },
+        },
+        {
+          delay: 200,
+          positionY: 1.5,
+          config: { duration: 280, easing: easings.easeOutCubic },
+          onResolve: () => {
+            setLidIsPeeking(false)
+          },
+        },
+      ],
     })
   }
 
   useEffect(() => {
-    let timeout = setTimeout(() => {
-      peekABoo()
-    }, 1500)
-
-    return () => clearTimeout(timeout)
+    peekABoo()
   }, [])
 
   return { toggleOpen, peek, hide, positionY, rotationY }
