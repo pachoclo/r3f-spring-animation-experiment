@@ -1,6 +1,5 @@
+import { GroupStopEventPropagation } from '@/components/GroupStopEventPropagation'
 import { animated } from '@react-spring/three'
-
-import { GroupStopEventPropagation } from '../../../GroupStopEventPropagation'
 import { frontBackWallsGeometry, material } from '../walls-mesh-props'
 import { useFrontWallAnimation } from './use-frontwall-animation'
 

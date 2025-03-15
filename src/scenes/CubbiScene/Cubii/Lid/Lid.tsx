@@ -1,8 +1,8 @@
+import { GroupStopEventPropagation } from '@/components/GroupStopEventPropagation'
 import { animated } from '@react-spring/three'
 import { GroupProps } from '@react-three/fiber'
 import { useControls } from 'leva'
 import { BoxGeometry, MeshNormalMaterial } from 'three'
-import { GroupStopEventPropagation } from '../../GroupStopEventPropagation'
 import { useLidAnimation } from './use-lid-animation'
 
 const material = new MeshNormalMaterial()

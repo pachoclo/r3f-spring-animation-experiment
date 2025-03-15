@@ -3,10 +3,8 @@ import { Leva } from 'leva'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { ACESFilmicToneMapping } from 'three'
-
-import '../styles/main.css'
-
-import { Scene } from './Scene'
+import './styles/main.css'
+import { Scene } from './scenes/CubbiScene/Scene'
 
 function Main() {
   return (

@@ -1,32 +1,31 @@
 import { easings, useSpring } from '@react-spring/three'
 import { useEffect } from 'react'
-import { useCubiiStore } from '../../cubii-store'
+import { useCubiiStore } from '../cubii-store'
 
-export function useBackWallAnimation() {
-  const { backWallState, setBackWallState, lidState } = useCubiiStore()
+export function useFrontWallAnimation() {
+  const { frontWallState, setFrontWallState, lidState } = useCubiiStore()
 
   const [{ rotationX }, animation] = useSpring(() => ({
     from: { rotationX: 0 },
   }))
 
   const open = () => {
-    setBackWallState('opening')
+    setFrontWallState('opening')
     animation.start({
       to: [
         {
-          delay: 150,
-          rotationX: -Math.PI / 2,
+          rotationX: Math.PI / 2,
           config: { duration: 500, easing: easings.easeOutBounce },
         },
       ],
       onResolve: () => {
-        setBackWallState('open')
+        setFrontWallState('open')
       },
     })
   }
 
   const close = () => {
-    setBackWallState('closing')
+    setFrontWallState('closing')
     animation.start({
       to: [
         {
@@ -35,31 +34,19 @@ export function useBackWallAnimation() {
         },
       ],
       onResolve: () => {
-        setBackWallState('closed')
+        setFrontWallState('closed')
       },
     })
   }
 
   const toggle = () => {
-    if (backWallState === 'opening' || backWallState === 'closing') {
-      return
-    }
-    if (backWallState === 'closed') {
-      open()
-    } else {
-      close()
-    }
+    if (frontWallState === 'closed') open()
+    if (frontWallState === 'open') close()
   }
 
   useEffect(() => {
-    if (lidState === 'opening' || lidState === 'closing') {
-      return
-    }
-    if (lidState === 'open') {
-      open()
-    } else {
-      close()
-    }
+    if (lidState === 'open') open()
+    if (lidState === 'closed') close()
   }, [lidState])
 
   return { rotationX, open, close, toggle }

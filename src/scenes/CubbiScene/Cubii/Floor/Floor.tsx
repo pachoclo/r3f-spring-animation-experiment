@@ -1,8 +1,7 @@
+import { GroupStopEventPropagation } from '@/components/GroupStopEventPropagation'
 import { animated } from '@react-spring/three'
 import { useControls } from 'leva'
 import { BoxGeometry, MeshNormalMaterial } from 'three'
-
-import { GroupStopEventPropagation } from '../../GroupStopEventPropagation'
 import { useFloorAnimation } from './use-floor-animation'
 
 const geometry = new BoxGeometry(2, 2, 0.5)

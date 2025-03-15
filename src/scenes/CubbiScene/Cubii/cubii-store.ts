@@ -10,6 +10,8 @@ type CubbiStore = {
 
   frontWallState: WallState
   backWallState: WallState
+  leftWallState: WallState
+  rightWallState: WallState
 
   // actions
   setLidState: (state: LidState) => void
@@ -18,6 +20,8 @@ type CubbiStore = {
 
   setFrontWallState: (state: WallState) => void
   setBackWallState: (state: WallState) => void
+  setLeftWallState: (state: WallState) => void
+  setRightWallState: (state: WallState) => void
 }
 
 const useCubiiStore = create<CubbiStore>()((set) => ({
@@ -27,6 +31,8 @@ const useCubiiStore = create<CubbiStore>()((set) => ({
 
   frontWallState: 'closed',
   backWallState: 'closed',
+  leftWallState: 'closed',
+  rightWallState: 'closed',
 
   // actions
   setLidState: (state: LidState) => set(() => ({ lidState: state })),
@@ -35,6 +41,8 @@ const useCubiiStore = create<CubbiStore>()((set) => ({
 
   setFrontWallState: (state: WallState) => set(() => ({ frontWallState: state })),
   setBackWallState: (state: WallState) => set(() => ({ backWallState: state })),
+  setLeftWallState: (state: WallState) => set(() => ({ leftWallState: state })),
+  setRightWallState: (state: WallState) => set(() => ({ rightWallState: state })),
 }))
 
 export { useCubiiStore }
